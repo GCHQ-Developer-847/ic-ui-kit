@@ -3331,6 +3331,10 @@ declare namespace LocalJSX {
          */
         "onIcChange"?: (event: IcDateInputCustomEvent<{ value: Date }>) => void;
         /**
+          * Emitted when value is cleared with clear button
+         */
+        "onIcClear"?: (event: IcDateInputCustomEvent<void>) => void;
+        /**
           * Emitted when the input gains focus.
          */
         "onIcFocus"?: (event: IcDateInputCustomEvent<{ value: Date }>) => void;
