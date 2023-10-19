@@ -1123,63 +1123,6 @@ describe("ic-search-bar", () => {
     expect(focusedElement).toBe("ic-search-bar-input-0");
   });
 
-  it("displays tooltip on search buttons when enabled", async () => {
-    const page = await newE2EPage();
-    await page.setContent(`<ic-search-bar label="Test Label"></ic-search-bar>`);
-
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-
-    await page.waitForChanges();
-
-    let submitSearchTooltipDisplay = await page.evaluate(() => {
-      const tooltip = document
-        .querySelector("ic-search-bar")
-        .shadowRoot.querySelector("#search-submit-button")
-        .shadowRoot.querySelector("ic-tooltip")
-        .shadowRoot.querySelector(".ic-tooltip-container");
-      return window.getComputedStyle(tooltip).display;
-    });
-
-    expect(submitSearchTooltipDisplay).toBe("none");
-
-    await focusAndTypeIntoInput("ba", page);
-
-    await page.waitForChanges();
-
-    await page.keyboard.press("Tab");
-
-    await page.waitForTimeout(300);
-
-    const clearTooltipDisplay = await page.evaluate(() => {
-      const tooltip = document
-        .querySelector("ic-search-bar")
-        .shadowRoot.querySelector("#clear-button")
-        .shadowRoot.querySelector("ic-tooltip")
-        .shadowRoot.querySelector(".ic-tooltip-container");
-
-      return window.getComputedStyle(tooltip).display;
-    });
-
-    expect(clearTooltipDisplay).toBe("block");
-
-    await page.keyboard.press("Tab");
-
-    await page.waitForTimeout(300);
-
-    submitSearchTooltipDisplay = await page.evaluate(() => {
-      const tooltip = document
-        .querySelector("ic-search-bar")
-        .shadowRoot.querySelector("#search-submit-button")
-        .shadowRoot.querySelector("ic-tooltip")
-        .shadowRoot.querySelector(".ic-tooltip-container");
-
-      return window.getComputedStyle(tooltip).display;
-    });
-
-    expect(submitSearchTooltipDisplay).toBe("block");
-  });
-
   it("should highlight first option again after no results found", async () => {
     const page = await newE2EPage();
     await page.setContent(`

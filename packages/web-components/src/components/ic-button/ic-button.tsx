@@ -51,7 +51,6 @@ export class Button {
   private hasTooltip: boolean = false;
   private id: string;
   private inheritedAttributes: { [k: string]: unknown } = {};
-  private tooltipEl: HTMLIcTooltipElement;
   private describedByEl: HTMLElement = null;
   private describedById: string = null;
   private mutationObserver: MutationObserver = null;
@@ -81,7 +80,7 @@ export class Button {
   @Prop() disabled?: boolean = false;
 
   /**
-   * If `true`, the ic-tooltip which is shown for icon variant will be disabled. Title or aria-label must be set if this prop is not applied.
+   * @deprecated No longer functional, by default tooltips do not appear on buttons. Use tooltipLabel to add a tooltip.
    */
   @Prop() disableTooltip?: boolean = false;
 
@@ -166,6 +165,11 @@ export class Button {
   @Prop() tooltipPlacement?: IcButtonTooltipPlacement = "bottom";
 
   /**
+   * The text label of the tooltip, which should contain additional content for buttons that have a short label (or aria-label for icon buttons). If not provided the button will not render a tooltip.
+   */
+  @Prop() tooltipLabel?: string;
+
+  /**
    * The type of the button.
    */
   @Prop() type?: IcButtonTypes = "button";
@@ -208,9 +212,9 @@ export class Button {
 
     const id = this.el.id;
     this.id = id !== undefined ? id : null;
-    this.hasTooltip = this.variant === "icon" && this.disableTooltip === false;
+    this.hasTooltip = !!this.tooltipLabel;
 
-    if (!this.hasTooltip) {
+    if (!this.tooltipLabel) {
       const describedById = this.inheritedAttributes[
         "aria-describedby"
       ] as string;
@@ -266,16 +270,11 @@ export class Button {
   }
 
   /**
-   * @internal Updates tooltip/aria-label text - needed as can't watch an ARIA attribute change.
+   * @internal Updates aria-label text - needed as can't watch an ARIA attribute change.
    */
   @Method()
   async updateAriaLabel(newValue: string): Promise<void> {
-    if (this.hasTooltip) {
-      this.tooltipEl.label = newValue;
-      this.buttonEl.setAttribute("aria-label", null);
-    } else {
-      this.buttonEl.setAttribute("aria-label", newValue);
-    }
+    this.buttonEl.setAttribute("aria-label", newValue);
   }
 
   private hasIconSlot(): boolean {
@@ -383,16 +382,6 @@ export class Button {
             referrerpolicy: this.referrerpolicy,
             hreflang: this.hreflang,
           };
-    const newTitle = title && (title as string);
-    const titleAttr = this.hasTooltip ? {} : { title: newTitle };
-    let tooltipText = "";
-    if (this.hasTooltip) {
-      if (newTitle !== undefined) {
-        tooltipText = newTitle;
-      } else if (ariaLabel !== null) {
-        tooltipText = ariaLabel as string;
-      }
-    }
 
     let describedBy: string = null;
     let buttonId: string = null;
@@ -414,12 +403,10 @@ export class Button {
           aria-label={this.loading ? "Loading" : ariaLabel}
           {...buttonAttrs}
           {...restInheritedAttributes}
-          {...titleAttr}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           ref={(el) => (this.buttonEl = el)}
-          id={buttonId}
-          aria-describedby={this.hasTooltip && ariaLabel ? null : describedBy}
+          aria-describedby={describedBy}
           part="button"
         >
           {this.hasIconSlot() && !this.loading && (
@@ -476,9 +463,8 @@ export class Button {
       >
         {this.hasTooltip && (
           <ic-tooltip
-            class={{ ["tooltip-disabled"]: this.disableTooltip }}
-            ref={(el) => (this.tooltipEl = el)}
-            label={tooltipText}
+            id={describedBy}
+            label={this.tooltipLabel}
             target={buttonId}
             placement={this.tooltipPlacement}
           >

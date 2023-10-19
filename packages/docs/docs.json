@@ -1298,9 +1298,15 @@
           "mutable": false,
           "attr": "disable-tooltip",
           "reflectToAttr": false,
-          "docs": "If `true`, the ic-tooltip which is shown for icon variant will be disabled. Title or aria-label must be set if this prop is not applied.",
-          "docsTags": [],
+          "docs": "",
+          "docsTags": [
+            {
+              "name": "deprecated",
+              "text": "No longer functional, by default tooltips do not appear on buttons. Use tooltipLabel to add a tooltip."
+            }
+          ],
           "default": "false",
+          "deprecation": "No longer functional, by default tooltips do not appear on buttons. Use tooltipLabel to add a tooltip.",
           "values": [
             {
               "type": "boolean"

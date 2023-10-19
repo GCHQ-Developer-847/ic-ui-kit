@@ -216,7 +216,7 @@ export namespace Components {
         "ariaControlsId": string | boolean;
         "ariaOwnsId": string | boolean;
         /**
-          * If `true`, the ic-tooltip which is shown for icon variant will be disabled. Title or aria-label must be set if this prop is not applied.
+          * @deprecated No longer functional, by default tooltips do not appear on buttons. Use tooltipLabel to add a tooltip.
          */
         "disableTooltip"?: boolean;
         /**
@@ -287,6 +287,10 @@ export namespace Components {
           * The place to display the linked URL, as the name for a browsing context (a tab, window, or iframe).
          */
         "target"?: string;
+        /**
+          * The text label of the tooltip, which should contain additional content for buttons that have a short label (or aria-label for icon buttons). If not provided the button will not render a tooltip.
+         */
+        "tooltipLabel"?: string;
         /**
           * The position of the tooltip in relation to the button.
          */
@@ -2821,7 +2825,7 @@ declare namespace LocalJSX {
         "ariaControlsId"?: string | boolean;
         "ariaOwnsId"?: string | boolean;
         /**
-          * If `true`, the ic-tooltip which is shown for icon variant will be disabled. Title or aria-label must be set if this prop is not applied.
+          * @deprecated No longer functional, by default tooltips do not appear on buttons. Use tooltipLabel to add a tooltip.
          */
         "disableTooltip"?: boolean;
         /**
@@ -2896,6 +2900,10 @@ declare namespace LocalJSX {
           * The place to display the linked URL, as the name for a browsing context (a tab, window, or iframe).
          */
         "target"?: string;
+        /**
+          * The text label of the tooltip, which should contain additional content for buttons that have a short label (or aria-label for icon buttons). If not provided the button will not render a tooltip.
+         */
+        "tooltipLabel"?: string;
         /**
           * The position of the tooltip in relation to the button.
          */
